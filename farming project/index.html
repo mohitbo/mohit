@@ -1,0 +1,548 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Sakhi - AI Farming Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Clouds with Rain -->
+    <div class="clouds-container">
+        <div class="cloud cloud1">
+            <div class="cloud-part cloud-part1"></div>
+            <div class="cloud-part cloud-part2"></div>
+            <div class="cloud-part cloud-part3"></div>
+            <div class="rain-drops" id="rainDrops1"></div>
+        </div>
+        <div class="cloud cloud2">
+            <div class="cloud-part cloud-part1"></div>
+            <div class="cloud-part cloud-part2"></div>
+            <div class="cloud-part cloud-part3"></div>
+            <div class="rain-drops" id="rainDrops2"></div>
+        </div>
+    </div>
+
+    <!-- Leaf Animation Background -->
+    <div class="leaf-container" id="leafContainer"></div>
+    
+    <!-- Soil Ground -->
+    <div class="soil-ground"></div>
+    
+    <!-- Tractor Animation -->
+    <div class="tractor-container">
+        <div class="tractor">
+            <div class="tractor-body"></div>
+            <div class="tractor-wheel front-wheel"></div>
+            <div class="tractor-wheel back-wheel"></div>
+            <div class="exhaust-pipe"></div>
+            <div class="exhaust-smoke"></div>
+        </div>
+    </div>
+    
+    <!-- Grass that grows after tractor passes -->
+    <div class="grass-container" id="grassContainer"></div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Back Button -->
+    <div class="back-button" id="backButton" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="assets/logo.jpg" alt="Krishi Sakhi Logo" class="logo">
+        <span class="logo-text">Krishi Sakhi</span>
+    </div>
+
+    <div class="main-container">
+        <!-- Login Page -->
+        <div id="login-page" class="page active">
+            <div class="login-content">
+                <h1 class="main-title">
+                    <span class="title-part">Krishi</span>
+                    <span style="color: #2e7d32;"title-part">Sakhi</span>
+                </h1>
+                <p class="subtitle">AI-Powered Personal Farming Assistant for Kerala Farmers</p>
+
+                <div class="language-section">
+                    <select class="language-selector">
+                        <option>English</option>
+                        <option>Malayalam</option>
+                        <option>Hindi</option>
+                        <option>Tamil</option>
+                    </select>
+                </div>
+
+                <div class="login-options">
+                    <div class="login-option primary" onclick="showPhonePage()">
+                        <i class="fas fa-phone"></i>
+                        <span>Login with Phone</span>
+                    </div>
+
+                    <div class="login-option secondary" onclick="showHomePage()">
+                        <i class="fas fa-user"></i>
+                        <span>Guest Mode</span>
+                    </div>
+                </div>
+
+                <div class="footer-text">
+                    <p>Empowering farmers with AI-driven insights and support</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phone Input Page -->
+        <div id="phone-page" class="page">
+            <div class="form-content">
+                <h2 class="page-title">Enter Your Phone Number</h2>
+                <p class="page-subtitle">We'll send you an OTP for verification</p>
+                
+                <div class="input-group">
+                    <input type="tel" id="phone-input" placeholder="10-digit phone number" maxlength="10">
+                    <div class="input-icon"><i class="fas fa-phone"></i></div>
+                </div>
+                
+                <button class="primary-button" onclick="submitPhone()">
+                    <span>Send OTP</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- OTP Verification Page -->
+        <div id="otp-page" class="page">
+            <div class="form-content">
+                <h2 class="page-title">Enter Verification Code</h2>
+                <p class="page-subtitle">Enter the 6-digit code sent to your phone</p>
+                
+                <div class="input-group">
+                    <input type="text" id="otp-input" placeholder="6-digit OTP" maxlength="6">
+                    <div class="input-icon"><i class="fas fa-shield-alt"></i></div>
+                </div>
+                
+                <button class="primary-button" onclick="verifyOTP()">
+                    <span>Verify</span>
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Profile Setup Page -->
+        <div id="profile-page" class="page">
+            <div class="form-content">
+                <h2 class="page-title">Setup Your Farm Profile</h2>
+                <p class="page-subtitle">Tell us about your farming details</p>
+                
+                <div class="form-grid">
+                    <div class="input-group">
+                        <input type="text" id="farmer-name" placeholder="Your Name">
+                        <div class="input-icon"><i class="fas fa-user"></i></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="farm-location" placeholder="Farm Location">
+                        <div class="input-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="number" id="land-size" placeholder="Land Size (acres)">
+                        <div class="input-icon"><i class="fas fa-chart-area"></i></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <select id="crop-type">
+                            <option value="">Select Primary Crop</option>
+                            <option value="Paddy">Paddy</option>
+                            <option value="Coconut">Coconut</option>
+                            <option value="Vegetables">Vegetables</option>
+                            <option value="Spices">Spices</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="input-icon"><i class="fas fa-leaf"></i></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <select id="soil-type">
+                            <option value="">Select Soil Type</option>
+                            <option value="Loamy">Loamy</option>
+                            <option value="Sandy">Sandy</option>
+                            <option value="Clay">Clay</option>
+                            <option value="Black">Black Soil</option>
+                        </select>
+                        <div class="input-icon"><i class="fas fa-mountain"></i></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <select id="irrigation-type">
+                            <option value="">Select Irrigation Type</option>
+                            <option value="Drip">Drip Irrigation</option>
+                            <option value="Sprinkler">Sprinkler</option>
+                            <option value="Flood">Flood Irrigation</option>
+                            <option value="Rainfed">Rain-fed</option>
+                        </select>
+                        <div class="input-icon"><i class="fas fa-tint"></i></div>
+                    </div>
+                </div>
+                
+                <button class="primary-button" onclick="submitProfile()">
+                    <span>Complete Setup</span>
+                    <i class="fas fa-check-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Home Dashboard Page -->
+        <div id="home-page" class="page">
+            <div class="dashboard-content">
+                <div class="dashboard-header">
+                    <div class="weather-card">
+                        <div class="weather-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <div class="weather-info">
+                            <span class="temperature">28°C</span>
+                            <span class="weather-desc">Partly Cloudy</span>
+                        </div>
+                    </div>
+                    
+                    <div class="farmer-profile">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="farmer-name-display">Guest User</h3>
+                            <p id="farm-location-display">Kerala, India</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card weather-card-feature" onclick="showWeatherPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h3>Weather</h3>
+                        <p>Current conditions & forecast</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showActivityPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Activity Logs</h3>
+                        <p>Track your farming activities</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showInsightsPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>AI Insights</h3>
+                        <p>Personalized recommendations</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showSoilPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>Soil Type</h3>
+                        <p>Soil analysis & recommendations</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showIrrigationPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>Irrigation</h3>
+                        <p>Water management system</p>
+                    </div>
+
+                    <div class="feature-card chat-card" onclick="showChatPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>Chat with AI</h3>
+                        <p>Ask questions, get answers</p>
+                    </div>
+
+                    <div class="feature-card" onclick="showRemindersPage()">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Reminders & Alerts</h3>
+                        <p>Never miss important tasks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Page -->
+        <div id="chat-page" class="page">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <i class="fas fa-robot"></i>
+                        <span>Chat with Krishi Sakhi</span>
+                    </div>
+                    <div class="chat-status online">
+                        <span class="status-dot"></span>
+                        <span>Online</span>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>നമസ്കാരം! ഞാൻ നിങ്ങളുടെ കൃഷി സഖിയാണ്. എനിക്ക് എങ്ങനെ സഹായിക്കാൻ കഴിയും?</p>
+                            <p>Hello! I'm your Krishi Sakhi. How can I help you today?</p>
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+
+                <div class="chat-input-section">
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" placeholder="Type your message here...">
+                        <button class="voice-button" onclick="startVoiceInput()">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="send-button" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating leaves
+        function createLeaves() {
+            const leafContainer = document.getElementById('leafContainer');
+            const leafCount = 30;
+
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDelay = Math.random() * 10 + 's';
+                leaf.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                leafContainer.appendChild(leaf);
+            }
+        }
+
+        // Create grass that grows after tractor passes
+        function createGrass() {
+            const grassContainer = document.getElementById('grassContainer');
+            for (let i = 0; i < 50; i++) {
+                const grass = document.createElement('div');
+                grass.className = 'grass-blade';
+                grass.style.left = Math.random() * 100 + '%';
+                grass.style.animationDelay = (i * 0.1) + 's';
+                grassContainer.appendChild(grass);
+            }
+        }
+
+        // Create rain drops
+        function createRainDrops() {
+            const rainContainer1 = document.getElementById('rainDrops1');
+            const rainContainer2 = document.getElementById('rainDrops2');
+
+            for (let i = 0; i < 15; i++) {
+                const drop1 = document.createElement('div');
+                drop1.className = 'rain-drop';
+                drop1.style.left = Math.random() * 100 + '%';
+                drop1.style.animationDelay = Math.random() * 2 + 's';
+                drop1.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                rainContainer1.appendChild(drop1);
+
+                const drop2 = document.createElement('div');
+                drop2.className = 'rain-drop';
+                drop2.style.left = Math.random() * 100 + '%';
+                drop2.style.animationDelay = Math.random() * 2 + 's';
+                drop2.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+                rainContainer2.appendChild(drop2);
+            }
+        }
+
+        // Navigation functions
+        let currentPage = 'login';
+        let pageHistory = [];
+
+        function showPage(pageId) {
+            // Hide current page
+            const currentPageElement = document.getElementById(currentPage + '-page');
+            if (currentPageElement) {
+                currentPageElement.classList.remove('active');
+            }
+
+            // Add to history
+            if (currentPage !== pageId) {
+                pageHistory.push(currentPage);
+            }
+
+            // Show new page
+            const newPageElement = document.getElementById(pageId + '-page');
+            if (newPageElement) {
+                newPageElement.classList.add('active');
+                currentPage = pageId;
+            }
+
+            // Show/hide back button
+            const backButton = document.getElementById('backButton');
+            if (pageId === 'login') {
+                backButton.style.display = 'none';
+            } else {
+                backButton.style.display = 'flex';
+            }
+        }
+
+        function goBack() {
+            if (pageHistory.length > 0) {
+                const previousPage = pageHistory.pop();
+
+                // Hide current page
+                const currentPageElement = document.getElementById(currentPage + '-page');
+                if (currentPageElement) {
+                    currentPageElement.classList.remove('active');
+                }
+
+                // Show previous page
+                const previousPageElement = document.getElementById(previousPage + '-page');
+                if (previousPageElement) {
+                    previousPageElement.classList.add('active');
+                    currentPage = previousPage;
+                }
+
+                // Hide back button if we're back to login
+                const backButton = document.getElementById('backButton');
+                if (previousPage === 'login') {
+                    backButton.style.display = 'none';
+                }
+            }
+        }
+
+        function showPhonePage() {
+            showPage('phone');
+        }
+
+        function showHomePage() {
+            showPage('home');
+        }
+
+        function showChatPage() {
+            showPage('chat');
+        }
+
+        function submitPhone() {
+            const phone = document.getElementById('phone-input').value;
+            if (phone.length === 10) {
+                showToast('OTP sent to ' + phone);
+                setTimeout(() => showPage('otp'), 500);
+            } else {
+                showToast('Please enter a valid 10-digit phone number');
+            }
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otp-input').value;
+            if (otp.length === 6) {
+                showToast('OTP verified successfully!');
+                setTimeout(() => showPage('profile'), 500);
+            } else {
+                showToast('Please enter a valid 6-digit OTP');
+            }
+        }
+
+        function submitProfile() {
+            const name = document.getElementById('farmer-name').value;
+            const location = document.getElementById('farm-location').value;
+            
+            if (name && location) {
+                showToast('Profile created successfully!');
+                document.getElementById('farmer-name-display').textContent = name;
+                document.getElementById('farm-location-display').textContent = location;
+                setTimeout(() => showPage('home'), 500);
+            } else {
+                showToast('Please fill all required fields');
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'message user-message';
+                userMsg.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>${message}</p>
+                    </div>
+                    <div class="message-time">Just now</div>
+                `;
+                messages.appendChild(userMsg);
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message bot-message';
+                    botMsg.innerHTML = `
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Thank you for your question about "${message}". I'm here to help with your farming needs!</p>
+                        </div>
+                        <div class="message-time">Just now</div>
+                    `;
+                    messages.appendChild(botMsg);
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1000);
+                
+                input.value = '';
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function startVoiceInput() {
+            showToast('Voice input feature coming soon!');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createLeaves();
+            createGrass();
+            createRainDrops();
+            
+            // Enter key support for chat
+            document.getElementById('chatInput')?.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
